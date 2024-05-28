@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
     implementation 'org.jsoup:jsoup:1.17.2'
-    implementation 'com.github.oshi:oshi-core:6.6.0'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'net.java.dev.jna:jna:5.14.0'
     implementation 'org.jetbrains:annotations:24.0.0'
