@@ -3,11 +3,12 @@ import com.vanniktech.maven.publish.SonatypeHost
 plugins {
     id("signing")
     id("java-library")
-    id "com.vanniktech.maven.publish" version "0.28.0"
+    id("com.github.johnrengelman.shadow") version("7.1.2")
+    id("com.vanniktech.maven.publish") version("0.28.0")
 }
 
 group = "org.hostile"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT-final"
 
 repositories {
     mavenCentral()
@@ -17,7 +18,8 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.17.2'
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'net.java.dev.jna:jna:5.14.0'
-    implementation 'org.jetbrains:annotations:24.1.0'
+
+    compileOnly 'org.jetbrains:annotations:24.1.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
@@ -28,6 +30,12 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
+
+shadowJar {
+    minimize()
+}
+
+tasks.build.dependsOn(tasks.shadowJar)
 
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01)
@@ -68,6 +76,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType(Javadoc) {
+tasks.withType(Javadoc).configureEach {
     failOnError false
 }
