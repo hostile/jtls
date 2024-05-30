@@ -223,5 +223,7 @@ public class JavaTlsClient {
         public Response complete() {
             return this.handler.executeRequest(method.getName(), url, data, queryParams, headers, cookies, allowRedirects, insecureSkipVerify);
         }
+
+        public static class RequestBuilder {}
     }
 }

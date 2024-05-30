@@ -1,9 +1,13 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
-    id("java")
+    id("signing")
+    id("java-library")
+    id "com.vanniktech.maven.publish" version "0.28.0"
 }
 
 group = "org.hostile"
-version = "1.0.0"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -25,6 +29,45 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.S01)
+
+    signAllPublications()
+}
+
+mavenPublishing {
+    coordinates(group, rootProject.name, version)
+
+    pom {
+        name = "jtls"
+        description = "Java bindings for bogdanfinn's open-source Go TLS Client"
+        inceptionYear = "2024"
+        url = "https://github.com/hostile/jtls"
+        licenses {
+            license {
+                name = "MIT"
+                url = "https://opensource.org/license/MIT"
+                distribution = "https://opensource.org/license/MIT"
+            }
+        }
+        developers {
+            developer {
+                id = "george"
+                name = "George"
+            }
+        }
+        scm {
+            url = "https://github.com/hostile/jtls/"
+            connection = "scm:git:git://github.com/hostile/jtls.git"
+            developerConnection = "scm:git:ssh://git@github.com/hostile/jtls.git"
+        }
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.withType(Javadoc) {
+    failOnError false
 }
