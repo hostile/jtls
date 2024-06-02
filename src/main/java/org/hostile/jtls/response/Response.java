@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.hostile.jtls.client.JavaTlsClient;
 import org.hostile.jtls.cookie.Cookie;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,6 +44,10 @@ public class Response {
         if (client.getConfig().isAutoLoadCookiesFromResponse()) {
             this.cookies.forEach(cookie -> client.getCookieJar().add(cookie));
         }
+    }
+
+    public Document soup() {
+        return Jsoup.parse(this.body);
     }
 
     public String text() {

@@ -44,14 +44,17 @@ public class BinaryDownloader {
             directory.mkdir();
         }
 
+        String systemArchitecture = System.getProperty("os.arch");
         String normalizedPlatform = getPlatform();
-        String architectureBits = System.getProperty("os.arch").replaceAll("[^0-9]", "");
+
+        String architectureTag = !normalizedPlatform.equals("windows") && (systemArchitecture.equals("aarch64") || systemArchitecture.equals("arm64")) ?
+                "arm64" : systemArchitecture.replaceAll("[^0-9]", "");
 
         return Jsoup.connect(String.format(REPOSITORY_RELEASES_URL + "/expanded_assets/%s", this.releaseString)).get()
                 .select("a")
                 .stream()
                 .filter(element -> element.attr("href") != null &&
-                        element.attr("href").contains(normalizedPlatform) && element.attr("href").contains(architectureBits))
+                        element.attr("href").contains(normalizedPlatform) && element.attr("href").contains(architectureTag))
                 .map(this::downloadAndInject)
                 .filter(Objects::nonNull)
                 .findFirst()
